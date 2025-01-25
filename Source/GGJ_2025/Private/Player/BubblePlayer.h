@@ -53,5 +53,6 @@ private:
 	virtual void Look(const FInputActionValue& Value);
 	UFUNCTION()
 	virtual void FloatUp(const FInputActionValue& Value);
-
+	UFUNCTION()
+	virtual void FloatDown(const FInputActionValue& Value);
 };

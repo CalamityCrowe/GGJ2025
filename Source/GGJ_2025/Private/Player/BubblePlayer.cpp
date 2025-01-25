@@ -65,7 +65,7 @@ void ABubblePlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 			{
 				if (UEnhancedInputLocalPlayerSubsystem* InputSystem = LocalPlayer->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>())
 				{
-					InputSystem->AddMappingContext(Inputs->Context, 0);
+					InputSystem->AddMappingContext(Inputs->Context, 0); // this is erroring due to not setting the data asset that contains the context, this can be fixed by either setting a null check or actually setting the input
 				}
 			}
 		}
@@ -77,7 +77,7 @@ void ABubblePlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 		PEI->BindAction(Inputs->MovementActions[0], ETriggerEvent::Triggered, this, &ABubblePlayer::Move); 
 		PEI->BindAction(Inputs->MovementActions[1], ETriggerEvent::Triggered, this, &ABubblePlayer::Look);
 		PEI->BindAction(Inputs->MovementActions[2], ETriggerEvent::Triggered, this, &ABubblePlayer::FloatUp);
-
+		PEI->BindAction(Inputs->MovementActions[3], ETriggerEvent::Triggered, this, &ABubblePlayer::FloatDown);
 	}
 
 }
@@ -87,8 +87,8 @@ void ABubblePlayer::Move(const FInputActionValue& Value)
 	FVector2D Input = Value.Get<FVector2D>();
 	if (Controller) 
 	{
-		AddMovementInput(GetActorForwardVector(), Input.Y); 
-		AddMovementInput(GetActorRightVector(), Input.X);
+		AddMovementInput(Camera->GetForwardVector()* 100, Input.Y); 
+		AddMovementInput(Camera->GetRightVector() * 100, Input.X);
 
 	}
 }
@@ -108,7 +108,15 @@ void ABubblePlayer::FloatUp(const FInputActionValue& Value)
 {
 	if (Controller)
 	{
-		AddMovementInput(FVector::UpVector, Value.Get<float>());
+		AddMovementInput(FVector::UpVector * 100, Value.Get<float>());
+	}
+}
+
+void ABubblePlayer::FloatDown(const FInputActionValue& Value)
+{
+	if (Controller) 
+	{
+		AddMovementInput(FVector::DownVector * 100, Value.Get<float>());
 	}
 }
 
