@@ -7,6 +7,12 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Components/CapsuleComponent.h"
 
+#include "InputData.h"
+#include "EnhancedInputComponent.h"
+#include "EnhancedInputSubsystems.h"
+#include "InputMappingContext.h"
+
+
 // Sets default values
 ABubblePlayer::ABubblePlayer()
 {
@@ -16,19 +22,19 @@ ABubblePlayer::ABubblePlayer()
 
 
 	BubbleMesh = CreateOptionalDefaultSubobject<UStaticMeshComponent>(TEXT("BubbleMesh"));
-	SetRootComponent(BubbleMesh);
+	BubbleMesh->SetupAttachment(GetRootComponent());
 
 	SpringArm = CreateOptionalDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
-	SpringArm->SetupAttachment(Camera);
+	SpringArm->SetupAttachment(BubbleMesh);
+	SpringArm->TargetArmLength = 400.0f;
+	SpringArm->bUsePawnControlRotation = true;
+
 
 	Camera = CreateOptionalDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(SpringArm);
 
-	MovementComponent = CreateOptionalDefaultSubobject<UCharacterMovementComponent>(TEXT("MovementComponent"));
-
 	GetMesh()->DestroyComponent();
-	GetCapsuleComponent()->DestroyComponent();
-	GetCharacterMovement()->DestroyComponent();
+	GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Swimming);
 
 }
 
@@ -51,5 +57,58 @@ void ABubblePlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+	if (PlayerInputComponent)
+	{
+		if (APlayerController* PC = Cast<APlayerController>(Controller))
+		{
+			if (ULocalPlayer* LocalPlayer = PC->GetLocalPlayer())
+			{
+				if (UEnhancedInputLocalPlayerSubsystem* InputSystem = LocalPlayer->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>())
+				{
+					InputSystem->AddMappingContext(Inputs->Context, 0);
+				}
+			}
+		}
+	}
+
+	if (UEnhancedInputComponent* PEI = Cast<UEnhancedInputComponent>(PlayerInputComponent)) 
+	{
+
+		PEI->BindAction(Inputs->MovementActions[0], ETriggerEvent::Triggered, this, &ABubblePlayer::Move); 
+		PEI->BindAction(Inputs->MovementActions[1], ETriggerEvent::Triggered, this, &ABubblePlayer::Look);
+		PEI->BindAction(Inputs->MovementActions[2], ETriggerEvent::Triggered, this, &ABubblePlayer::FloatUp);
+
+	}
+
+}
+
+void ABubblePlayer::Move(const FInputActionValue& Value)
+{
+	FVector2D Input = Value.Get<FVector2D>();
+	if (Controller) 
+	{
+		AddMovementInput(GetActorForwardVector(), Input.Y); 
+		AddMovementInput(GetActorRightVector(), Input.X);
+
+	}
+}
+
+void ABubblePlayer::Look(const FInputActionValue& Value)
+{
+	FVector2D Input = Value.Get<FVector2D>();
+	if (Controller)
+	{
+		AddControllerPitchInput(Input.Y);
+		AddControllerYawInput(Input.X);
+	}
+
+}
+
+void ABubblePlayer::FloatUp(const FInputActionValue& Value)
+{
+	if (Controller)
+	{
+		AddMovementInput(FVector::UpVector, Value.Get<float>());
+	}
 }
 

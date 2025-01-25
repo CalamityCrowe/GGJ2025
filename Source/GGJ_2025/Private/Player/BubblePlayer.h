@@ -6,9 +6,11 @@
 #include "GameFramework/Character.h"
 #include "BubblePlayer.generated.h"
 
-class UCameraComponent; 
+class UCameraComponent;
 class USpringArmComponent;
 class UCharacterMovementComponent;
+
+class UInputData;
 
 UCLASS()
 class ABubblePlayer : public ACharacter
@@ -23,7 +25,7 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
@@ -31,14 +33,25 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 private:
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite,Category = "Mesh", meta = (AllowPrivateAccess = true))
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Mesh", meta = (AllowPrivateAccess = true))
 	TObjectPtr<UStaticMeshComponent> BubbleMesh;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Camera", meta = (AllowPrivateAccess = true))
 	TObjectPtr<UCameraComponent> Camera;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Camera, meta = (AllowPrivateAccess = true))
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Camera", meta = (AllowPrivateAccess = true))
 	TObjectPtr<USpringArmComponent> SpringArm;
-	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite, Category = "Movement", meta = (AllowPrivateAccess = true))
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Movement", meta = (AllowPrivateAccess = true))
 	TObjectPtr<UCharacterMovementComponent> MovementComponent;
+
+	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category = "Inputs", meta = (AllowPrivateAccess = true))
+	TObjectPtr<UInputData> Inputs;
+
+private:
+	UFUNCTION()
+	virtual void Move(const FInputActionValue& Value);
+	UFUNCTION()
+	virtual void Look(const FInputActionValue& Value);
+	UFUNCTION()
+	virtual void FloatUp(const FInputActionValue& Value);
 
 };
