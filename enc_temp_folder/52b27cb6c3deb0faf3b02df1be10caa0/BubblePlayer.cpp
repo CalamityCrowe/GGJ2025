@@ -137,7 +137,7 @@ void ABubblePlayer::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor,
 			HandleDeath();
 		}
 
-		GetCharacterMovement()->AddImpulse(Hit.Normal * 100);
+		GetCharacterMovement()->Velocity = -Hit.Normal * 1000;
 		ActivateBurst();
 		IFrames(); 
 	}
