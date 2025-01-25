@@ -74,4 +74,7 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void IFrames();
+	UFUNCTION(BlueprintImplementableEvent)
+	void CollectReact(); 
+
 };

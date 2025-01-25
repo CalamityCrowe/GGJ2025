@@ -141,6 +141,11 @@ void ABubblePlayer::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor,
 		ActivateBurst();
 		IFrames(); 
 	}
+	else if (OtherActor->ActorHasTag("Collect")) 
+	{
+		OtherActor->Destroy(); 
+		CollectReact(); 
+	}
 }
 
 
