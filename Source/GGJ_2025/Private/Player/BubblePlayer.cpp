@@ -36,6 +36,8 @@ ABubblePlayer::ABubblePlayer()
 	GetMesh()->DestroyComponent();
 	GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Swimming);
 
+	GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &ABubblePlayer::OnComponentBeginOverlap); 
+
 }
 
 // Called when the game starts or when spawned
@@ -49,7 +51,7 @@ void ABubblePlayer::BeginPlay()
 void ABubblePlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
+	GetCharacterMovement()->Velocity += FVector(0,0,DeltaTime * DownwardForce); 
 }
 
 // Called to bind functionality to input
@@ -117,6 +119,14 @@ void ABubblePlayer::FloatDown(const FInputActionValue& Value)
 	if (Controller) 
 	{
 		AddMovementInput(FVector::DownVector * 100, Value.Get<float>());
+	}
+}
+
+void ABubblePlayer::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	if (OtherActor->ActorHasTag("Hazard")) 
+	{
+		Destroy(); 
 	}
 }
 

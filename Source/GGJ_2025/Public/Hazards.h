@@ -6,6 +6,9 @@
 #include "GameFramework/Actor.h"
 #include "Hazards.generated.h"
 
+class UCapsuleComponent; 
+class UStaticMeshComponent; 
+
 UCLASS()
 class GGJ_2025_API AHazards : public AActor
 {
@@ -22,5 +25,14 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	UStaticMeshComponent* GetMesh() const { return Mesh;  }
+	UCapsuleComponent* GetCollider() const { return Collider;  }
+private:
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (AllowPrivateAccess = true),Category = "Mesh")
+	TObjectPtr<UStaticMeshComponent> Mesh; 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (AllowPrivateAccess = true), Category = "Collision")
+	TObjectPtr<UCapsuleComponent> Collider;
+
 
 };
