@@ -6,7 +6,7 @@
 // Sets default values
 ACollectibleSpawn::ACollectibleSpawn()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 }
@@ -15,7 +15,7 @@ ACollectibleSpawn::ACollectibleSpawn()
 void ACollectibleSpawn::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 }
 
 // Called every frame
@@ -27,9 +27,9 @@ void ACollectibleSpawn::Tick(float DeltaTime)
 
 void ACollectibleSpawn::SpawnNewBubble()
 {
-	if (CollectRef) 
+	if (CollectRef)
 	{
-		FActorSpawnParameters SpawnParams; 
+		FActorSpawnParameters SpawnParams;
 		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::DontSpawnIfColliding;
 		GetWorld()->SpawnActor<ACollectible>(CollectRef, GetActorLocation(), FRotator(), SpawnParams);
 	}
