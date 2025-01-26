@@ -2,7 +2,7 @@
 
 
 #include "CollectibleSpawn.h"
-#include "Collectible.h"
+
 // Sets default values
 ACollectibleSpawn::ACollectibleSpawn()
 {
@@ -27,11 +27,5 @@ void ACollectibleSpawn::Tick(float DeltaTime)
 
 void ACollectibleSpawn::SpawnNewBubble()
 {
-	if (CollectRef) 
-	{
-		FActorSpawnParameters SpawnParams; 
-		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::DontSpawnIfColliding;
-		GetWorld()->SpawnActor<ACollectible>(CollectRef, GetActorLocation(), FRotator(), SpawnParams);
-	}
 }
 

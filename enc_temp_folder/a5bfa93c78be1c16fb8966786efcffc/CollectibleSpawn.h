@@ -6,7 +6,6 @@
 #include "GameFramework/Actor.h"
 #include "CollectibleSpawn.generated.h"
 
-class ACollectible; 
 UCLASS()
 class GGJ_2025_API ACollectibleSpawn : public AActor
 {
@@ -24,13 +23,7 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	UFUNCTION(BlueprintCallable)
-	void SpawnNewBubble(); 
-
 private:
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = true), Category = "Spawn Actor")
-	TSubclassOf<ACollectible> CollectRef; 
 
-	
 
 };
