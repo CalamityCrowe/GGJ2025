@@ -143,8 +143,10 @@ void ABubblePlayer::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor,
 	}
 	else if (OtherActor->ActorHasTag("Collect")) 
 	{
+		GetCharacterMovement()->Velocity = Hit.Normal * 750;
 		OtherActor->Destroy(); 
 		CollectReact(); 
+		IFrames();	
 	}
 }
 
