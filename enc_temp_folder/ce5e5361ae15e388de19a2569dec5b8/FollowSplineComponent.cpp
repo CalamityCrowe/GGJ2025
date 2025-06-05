@@ -48,13 +48,18 @@ void UFollowSplineComponent::AutoFindSpline()
 		UGameplayStatics::GetAllActorsOfClass(GetWorld(), ASplineActor::StaticClass(), FoundActors);
 		if (FoundActors.Num() == 0)
 		{
+			UE_LOG(LogTemp, Warning, TEXT("No spline actors found in the world."));
 			return;
 		}
 		float NearestDistance = FLT_MAX;
 		if (SplineActor = Cast<ASplineActor>(UGameplayStatics::FindNearestActor(GetForwardAimVector(), FoundActors, NearestDistance))) 
 		{
+			UE_LOG(LogTemp, Log, TEXT("Found spline actor: %s"), *SplineActor->GetName());
 		}
-
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("No suitable spline actor found."));
+		}
 	}
 }
 
@@ -77,17 +82,11 @@ void UFollowSplineComponent::GetDistanceAlongSpline()
 	float SplineLength = SplineActor->GetSplineComponent()->GetSplineLength();
 	DistanceAlongSpline = SplineActor->GetSplineComponent()->FindInputKeyClosestToWorldLocation(OwnerLocation);
 	PercentAlongSpline = DistanceAlongSpline / SplineLength;
-	//GEngine->AddOnScreenDebugMessage(-1, 0.01f, FColor::Green, FString::Printf(TEXT("Distance Along Spline: %f"), PercentAlongSpline));
-	if (DistanceAlongSpline >= SplineLength)
-	{
-		DistanceAlongSpline = 0.0f; // Clamp to 1.0 if it exceeds the spline length
-	}
 }
 
 void UFollowSplineComponent::UpdateDestination()
 {
 	DestinationLocation = SplineActor->GetSplineComponent()->FindLocationClosestToWorldLocation(GetForwardAimVector(), ESplineCoordinateSpace::World);
-	
 }
 
 void UFollowSplineComponent::ProceedToDestination(float DeltaTime)

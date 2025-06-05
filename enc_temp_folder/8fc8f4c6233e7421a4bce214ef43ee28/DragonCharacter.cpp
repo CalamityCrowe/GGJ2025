@@ -24,15 +24,13 @@ void ADragonCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	GetCharacterMovement()->MaxSwimSpeed = FMath::RandRange(150, 300); 
-
 }
 
 // Called every frame
 void ADragonCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	if(FollowSplineComponent && FollowSplineComponent->GetSplineActor())
+	if(FollowSplineComponent)
 	{
 		FollowSplineComponent->GetDistanceAlongSpline();
 		FollowSplineComponent->UpdateDestination();

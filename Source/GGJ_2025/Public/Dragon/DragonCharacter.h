@@ -6,7 +6,7 @@
 #include "GameFramework/Character.h"
 #include "DragonCharacter.generated.h"
 
-class ASplineActor;
+class UFollowSplineComponent;
 
 UCLASS()
 class GGJ_2025_API ADragonCharacter : public ACharacter
@@ -35,7 +35,7 @@ public:
 
 private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = true))
-	TObjectPtr<ASplineActor> SplineActor;
+	TObjectPtr<UFollowSplineComponent> FollowSplineComponent;
 
 	float TimeOnSpline = 0.0f;
 	float SplineDuration = 0.0f;
@@ -46,4 +46,5 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = true))
 	bool bDirection; 
 
+	float TimeSinceLastUpdate = 0.0f;
 };

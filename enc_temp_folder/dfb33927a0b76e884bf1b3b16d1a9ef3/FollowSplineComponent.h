@@ -29,12 +29,8 @@ public:
 	void GetDistanceAlongSpline();
 	void UpdateDestination();
 
-	
+	UFUNCTION(BlueprintCallable)
 	void ProceedToDestination(float DeltaTime);
-
-	ASplineActor* GetSplineActor() const { return SplineActor; }
-
-
 private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite,Category = "Spline", meta = (AllowPrivateAccess = true))
 	TObjectPtr<ASplineActor> SplineActor;
