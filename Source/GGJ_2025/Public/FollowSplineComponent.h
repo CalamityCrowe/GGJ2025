@@ -29,6 +29,8 @@ public:
 	void GetDistanceAlongSpline();
 	void UpdateDestination();
 
+	UFUNCTION(BlueprintCallable)
+	void SelectRandomSpline();
 	
 	void ProceedToDestination(float DeltaTime);
 

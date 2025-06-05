@@ -25,7 +25,7 @@ void ADragonCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	GetCharacterMovement()->MaxSwimSpeed = FMath::RandRange(150, 300); 
-
+	RandomSplineTimer();
 }
 
 // Called every frame

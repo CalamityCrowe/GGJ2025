@@ -90,6 +90,18 @@ void UFollowSplineComponent::UpdateDestination()
 	
 }
 
+void UFollowSplineComponent::SelectRandomSpline()
+{
+	TArray<AActor*> FoundActors;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ASplineActor::StaticClass(), FoundActors);
+	if (FoundActors.Num() == 0)
+	{
+		return;
+	}
+	int32 RandomIndex = FMath::RandRange(0, FoundActors.Num() - 1);
+	SplineActor = Cast<ASplineActor>(FoundActors[RandomIndex]);
+}
+
 void UFollowSplineComponent::ProceedToDestination(float DeltaTime)
 {
 	if (ADragonCharacter* Dragon = Cast<ADragonCharacter>(GetOwner())) 

@@ -33,6 +33,9 @@ public:
 	UFUNCTION(BlueprintPure)
 	int GetDragonEyeIndex() const { return DragonEyeIndex; }
 
+	UFUNCTION (BlueprintImplementableEvent)
+	void RandomSplineTimer(); 
+
 private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = true))
 	TObjectPtr<UFollowSplineComponent> FollowSplineComponent;
